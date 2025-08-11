@@ -1,0 +1,21 @@
+.dc-btn {
+  /* sizing */
+  --btn-px: 16px; --btn-py: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: var(--btn-py) var(--btn-px);
+  font-weight: 600; line-height: 1; cursor: pointer; user-select: none;
+  border: none; background: none; /* glass background comes from .ui-glass */
+}
+
+/* Sizes */
+.btn-sm { --btn-px: 12px; --btn-py: 8px; font-size: .9rem; }
+.btn-md { --btn-px: 16px; --btn-py: 10px; font-size: 1rem; }
+.btn-lg { --btn-px: 20px; --btn-py: 12px; font-size: 1.05rem; }
+
+/* Variants (text color; glass handles bg/border) */
+.btn-primary { color: rgb(var(--glass-fg-rgb)); }
+.btn-ghost   { background: transparent; color: rgb(var(--glass-fg-rgb)); }
+.btn-danger  { color: rgb(255, 232, 232); }
+
+/* Focus ring */
+.dc-btn:focus-visible { box-shadow: var(--ring, 0 0 0 3px rgba(79,70,229,.45)); }

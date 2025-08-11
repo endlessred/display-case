@@ -1,24 +1,33 @@
 .ui-glass {
   position: relative;
-  border-radius: var(--glass-radius);
+  /* Retrofuturistic opposite-corners shape */
+  border-radius: var(--corner-radius-base);
+  border-top-right-radius: var(--retro-outer) var(--retro-inner);
+  border-bottom-left-radius: var(--retro-outer) var(--retro-inner);
   background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%),
               rgba(var(--glass-bg-rgb), var(--glass-alpha-2));
   -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
   backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
-  color: rgb(var(--glass-fg-rgb));
+  box-shadow: var(--glass-shadow-md);
   border: var(--glass-border);
+  /* soft inner highlight */
   box-shadow: var(--glass-shadow-md), var(--glass-inner-highlight);
+  color: rgb(var(--glass-fg-rgb));
   contain: paint;
 }
 
-.ui-glass[data-no-backdrop] { background: rgba(var(--glass-bg-rgb), 0.85); }
+/* Fallback when no backdrop support: lean on higher alpha */
+.ui-glass[data-no-backdrop] {
+  background: rgba(var(--glass-bg-rgb), 0.85);
+}
 
 .ui-glass.interactive { transition: transform .12s ease, box-shadow .12s ease; }
 .ui-glass.interactive:focus-visible, .ui-glass.interactive:hover { transform: translateY(-1px); box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
 
-.ui-glass.elev-sm { --glass-blur-md: var(--glass-blur-sm); --glass-alpha-2: var(--glass-alpha-1); }
-.ui-glass.elev-lg { --glass-blur-md: var(--glass-blur-lg); --glass-alpha-2: var(--glass-alpha-3); }
+.ui-glass.elev-sm { --glass-blur-md: var(--glass-blur-sm); --glass-alpha-2: var(--glass-alpha-1); box-shadow: var(--glass-shadow-sm), var(--glass-inner-highlight); }
+.ui-glass.elev-lg { --glass-blur-md: var(--glass-blur-lg); --glass-alpha-2: var(--glass-alpha-3); box-shadow: var(--glass-shadow-md), var(--glass-inner-highlight); }
 
+/* High contrast / forced colors */
 @media (forced-colors: active){
   .ui-glass { background: Canvas; color: CanvasText; border: 1px solid CanvasText; -webkit-backdrop-filter: none; backdrop-filter: none; }
 }

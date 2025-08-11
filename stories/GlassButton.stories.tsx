@@ -16,3 +16,4 @@ type Story = StoryObj<typeof GlassButton>;
 export const Primary: Story = { args: { children: "Continue" } };
 export const Ghost: Story = { args: { children: "Learn more", variant: "ghost" } };
 export const Danger: Story = { args: { children: "Delete", variant: "danger" } };
+export const RetroCorners = { args: { children: 'Retrofuturistic ✨', size: 'lg' } };

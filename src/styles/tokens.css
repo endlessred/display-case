@@ -15,6 +15,9 @@
   --glass-shadow-sm: 0 4px 16px rgba(0,0,0,0.10);
   --glass-shadow-md: 0 8px 32px rgba(0,0,0,0.15);
   --glass-noise-opacity: 0.035;
+  --corner-radius-base: 12px;  /* TL & BR */
+  --retro-outer: 28px;         /* TR & BL horizontal radius */
+  --retro-inner: 10px;         /* TR & BL vertical radius */
 }
 
 [data-theme="dark"] {
