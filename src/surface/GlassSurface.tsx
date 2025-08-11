@@ -6,6 +6,7 @@ type SurfaceOwnProps = {
   elevation?: 'sm' | 'md' | 'lg';
   interactive?: boolean;
   noise?: boolean;
+  tone?: 'default' | 'primary' | 'success' | 'info' | 'danger';
 };
 
 type AsProp<C extends ElementType> = { as?: C };
@@ -19,19 +20,25 @@ export type GlassSurfaceProps<C extends ElementType = 'div'> =
   PolymorphicProps<C, SurfaceOwnProps>;
 
 const supportsBackdrop =
+  typeof window !== 'undefined' &&
   typeof CSS !== 'undefined' &&
   (CSS.supports('backdrop-filter: blur(1px)') ||
    CSS.supports('-webkit-backdrop-filter: blur(1px)'));
 
 export function GlassSurface<C extends ElementType = 'div'>(
-  { as, elevation = 'md', interactive, className, children, ...rest }:
-  GlassSurfaceProps<C>
+  { as, elevation = 'md', interactive, className, tone, children, ...rest }: GlassSurfaceProps<C>
 ) {
   const Tag = (as || 'div') as ElementType;
   return (
     <Tag
       data-no-backdrop={supportsBackdrop ? undefined : ''}
-      className={clsx('ui-glass', `elev-${elevation}`, interactive && 'interactive', className)}
+      className={clsx(
+        'ui-glass',
+        `elev-${elevation}`,
+        interactive && 'interactive',
+        tone && `tone-${tone}`,
+        className
+      )}
       {...rest}
     >
       {children}

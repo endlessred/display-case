@@ -4,8 +4,10 @@
   border-radius: var(--corner-radius-base);
   border-top-right-radius: var(--retro-outer) var(--retro-inner);
   border-bottom-left-radius: var(--retro-outer) var(--retro-inner);
-  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%),
-              rgba(var(--glass-bg-rgb), var(--glass-alpha-2));
+  background:
+    var(--tone-overlay, none),
+    linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%),
+    rgba(var(--glass-bg-rgb), var(--glass-alpha-2));
   -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
   backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
   box-shadow: var(--glass-shadow-md);
@@ -14,6 +16,39 @@
   box-shadow: var(--glass-shadow-md), var(--glass-inner-highlight);
   color: rgb(var(--glass-fg-rgb));
   contain: paint;
+}
+
+.tone-primary {
+  --tone-overlay: radial-gradient(
+    var(--tone-overlay-size-x) var(--tone-overlay-size-y) at 100% 0%,
+    rgba(var(--tone-primary-rgb), var(--tone-overlay-strength)) 0%,
+    rgba(var(--tone-primary-rgb), .10) 16%,
+    rgba(var(--tone-primary-rgb), var(--tone-overlay-fade)) 60%
+  );
+}
+.tone-success {
+  --tone-overlay: radial-gradient(
+    var(--tone-overlay-size-x) var(--tone-overlay-size-y) at 100% 0%,
+    rgba(var(--tone-success-rgb), var(--tone-overlay-strength)) 0%,
+    rgba(var(--tone-success-rgb), .10) 16%,
+    rgba(var(--tone-success-rgb), var(--tone-overlay-fade)) 60%
+  );
+}
+.tone-info {
+  --tone-overlay: radial-gradient(
+    var(--tone-overlay-size-x) var(--tone-overlay-size-y) at 100% 0%,
+    rgba(var(--tone-info-rgb), var(--tone-overlay-strength)) 0%,
+    rgba(var(--tone-info-rgb), .10) 16%,
+    rgba(var(--tone-info-rgb), var(--tone-overlay-fade)) 60%
+  );
+}
+.tone-danger {
+  --tone-overlay: radial-gradient(
+    var(--tone-overlay-size-x) var(--tone-overlay-size-y) at 100% 0%,
+    rgba(var(--tone-danger-rgb), var(--tone-overlay-strength)) 0%,
+    rgba(var(--tone-danger-rgb), .10) 16%,
+    rgba(var(--tone-danger-rgb), var(--tone-overlay-fade)) 60%
+  );
 }
 
 /* Fallback when no backdrop support: lean on higher alpha */

@@ -1,0 +1,21 @@
+.dc-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+.dc-dialog {
+  min-width: min(640px, 92vw);
+  max-width: 92vw;
+  margin: 24px;
+  padding: 20px;
+}
+
+.dc-dialog__header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.dc-dialog__title { font-weight: 700; font-size: 1.1rem; }
+.dc-dialog__footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }

@@ -8,3 +8,16 @@ type Story = StoryObj<typeof GlassCard>;
 export const Basic: Story = {
   args: { header: 'Payment Methods', children: 'Securely add or remove cards.' },
 };
+
+export const DangerCard: Story = {
+  args: {
+    elevation: 'lg',
+    header: 'Delete account',
+    children: 'This action cannot be undone.',
+  },
+  render: (args) => <GlassCard {...args} tone="danger" />
+};
+export const InfoCard = {
+  args: { header: 'Heads up', children: 'Informational surface.' },
+  render: (args) => <GlassCard {...args} tone="info" elevation="lg" />
+};

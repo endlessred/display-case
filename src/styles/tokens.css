@@ -15,9 +15,20 @@
   --glass-shadow-sm: 0 4px 16px rgba(0,0,0,0.10);
   --glass-shadow-md: 0 8px 32px rgba(0,0,0,0.15);
   --glass-noise-opacity: 0.035;
-  --corner-radius-base: 12px;  /* TL & BR */
-  --retro-outer: 28px;         /* TR & BL horizontal radius */
-  --retro-inner: 10px;         /* TR & BL vertical radius */
+  --corner-radius-base: 12px;  
+  --retro-outer: 28px;         
+  --retro-inner: 10px;         
+
+  /* Tone tokens */
+  --tone-primary-rgb: 79, 70, 229;   
+  --tone-success-rgb: 16, 185, 129;  
+  --tone-info-rgb: 59, 130, 246;     
+  --tone-danger-rgb: 220, 38, 38;   
+  --tone-overlay-strength: 0.22;    
+  --tone-overlay-fade: 0.00;        
+  --tone-overlay-size-x: 40rem;     
+  --tone-overlay-size-y: 30rem;
+
 }
 
 [data-theme="dark"] {
