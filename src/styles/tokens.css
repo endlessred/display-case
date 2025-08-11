@@ -1,0 +1,33 @@
+:root {
+  --glass-bg-rgb: 255, 255, 255;
+  --glass-fg-rgb: 17, 17, 19;
+  --glass-accent: 79, 70, 229;
+  --glass-alpha-1: 0.06;
+  --glass-alpha-2: 0.10;
+  --glass-alpha-3: 0.16;
+  --glass-blur-sm: 8px;
+  --glass-blur-md: 12px;
+  --glass-blur-lg: 16px;
+  --glass-saturate: 1.1;
+  --glass-radius: 16px;
+  --glass-border: 1px solid rgba(255,255,255,0.35);
+  --glass-inner-highlight: inset 0 1px 0 rgba(255,255,255,0.35);
+  --glass-shadow-sm: 0 4px 16px rgba(0,0,0,0.10);
+  --glass-shadow-md: 0 8px 32px rgba(0,0,0,0.15);
+  --glass-noise-opacity: 0.035;
+}
+
+[data-theme="dark"] {
+  --glass-bg-rgb: 17, 17, 19;
+  --glass-fg-rgb: 245, 245, 247;
+  --glass-border: 1px solid rgba(255,255,255,0.18);
+  --glass-shadow-sm: 0 4px 16px rgba(0,0,0,0.40);
+  --glass-shadow-md: 0 8px 32px rgba(0,0,0,0.55);
+}
+
+[data-theme="solid"] {
+  --glass-alpha-1: 0.92;
+  --glass-alpha-2: 0.96;
+  --glass-alpha-3: 0.98;
+  --glass-blur-sm: 0px; --glass-blur-md: 0px; --glass-blur-lg: 0px;
+}

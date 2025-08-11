@@ -1,0 +1,61 @@
+{
+  "name": "display-case",
+  "version": "0.1.0",
+  "description": "Glassmorphism React UI components (accessible, token-driven)",
+  "type": "module",
+  "license": "MIT",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./surface": {
+      "types": "./dist/surface/index.d.ts",
+      "import": "./dist/surface/index.js",
+      "require": "./dist/surface/index.cjs"
+    },
+    "./card": {
+      "types": "./dist/card/index.d.ts",
+      "import": "./dist/card/index.js",
+      "require": "./dist/card/index.cjs"
+    },
+    "./button": {
+      "types": "./dist/button/index.d.ts",
+      "import": "./dist/button/index.js",
+      "require": "./dist/button/index.cjs"
+    }
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^8.1.0",
+    "@storybook/addon-essentials": "^8.1.0",
+    "@storybook/react": "^8.6.14",
+    "@storybook/react-vite": "^8.1.0",
+    "@types/react": "^18.2.74",
+    "@types/react-dom": "^18.2.23",
+    "clsx": "^2.1.1",
+    "storybook": "^8.6.14",
+    "tsup": "^8.1.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.2.11"
+  },
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build": "tsup src/index.ts src/surface/index.ts src/card/index.ts src/button/index.ts --format cjs,esm --dts && node scripts/copy-css.js",
+    "build:storybook": "storybook build",
+    "lint": "echo 'TODO: add eslint'",
+    "test": "echo 'TODO: add tests'",
+    "prepublishOnly": "pnpm run build"
+  }
+}
