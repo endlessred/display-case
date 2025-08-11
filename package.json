@@ -34,7 +34,8 @@
     },
     "./tabs":    { "types": "./dist/tabs/index.d.ts",    "import": "./dist/tabs/index.js",    "require": "./dist/tabs/index.cjs" },
     "./tooltip": { "types": "./dist/tooltip/index.d.ts", "import": "./dist/tooltip/index.js", "require": "./dist/tooltip/index.cjs" },
-    "./form":    { "types": "./dist/form/index.d.ts",    "import": "./dist/form/index.js",    "require": "./dist/form/index.cjs" }
+    "./form":    { "types": "./dist/form/index.d.ts",    "import": "./dist/form/index.js",    "require": "./dist/form/index.cjs" },
+    "./navbar":  { "types": "./dist/navbar/index.d.ts",  "import": "./dist/navbar/index.js",  "require": "./dist/navbar/index.cjs" }
   },
   "peerDependencies": {
     "react": ">=18",

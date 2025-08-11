@@ -12,7 +12,8 @@ export default defineConfig({
     "button/index": "src/button/index.ts",
     "tabs/index": "src/tabs/index.ts",
     "tooltip/index": "src/tooltip/index.ts",
-    "form/index": "src/form/index.ts"
+    "form/index": "src/form/index.ts",
+    "navbar/index": "src/navbar/index.ts"
   },
   external: ["react", "react-dom"],
   minify: true
