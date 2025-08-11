@@ -9,7 +9,10 @@ export default defineConfig({
     index: "src/index.ts",
     "surface/index": "src/surface/index.ts",
     "card/index": "src/card/index.ts",
-    "button/index": "src/button/index.ts"
+    "button/index": "src/button/index.ts",
+    "tabs/index": "src/tabs/index.ts",
+    "tooltip/index": "src/tooltip/index.ts",
+    "form/index": "src/form/index.ts"
   },
   external: ["react", "react-dom"],
   minify: true

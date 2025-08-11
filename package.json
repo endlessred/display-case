@@ -31,13 +31,17 @@
       "types": "./dist/button/index.d.ts",
       "import": "./dist/button/index.js",
       "require": "./dist/button/index.cjs"
-    }
+    },
+    "./tabs":    { "types": "./dist/tabs/index.d.ts",    "import": "./dist/tabs/index.js",    "require": "./dist/tabs/index.cjs" },
+    "./tooltip": { "types": "./dist/tooltip/index.d.ts", "import": "./dist/tooltip/index.js", "require": "./dist/tooltip/index.cjs" },
+    "./form":    { "types": "./dist/form/index.d.ts",    "import": "./dist/form/index.js",    "require": "./dist/form/index.cjs" }
   },
   "peerDependencies": {
     "react": ">=18",
     "react-dom": ">=18"
   },
   "devDependencies": {
+    "@floating-ui/react-dom": "^2.1.5",
     "@storybook/addon-a11y": "^8.1.0",
     "@storybook/addon-essentials": "^8.1.0",
     "@storybook/react": "^8.6.14",
