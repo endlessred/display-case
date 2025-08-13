@@ -1,0 +1,86 @@
+/* Combobox wrapper uses the glass surface, so retro corners + tones come for free */
+.dc-cbx { padding: 8px; display: grid; gap: 6px; }
+
+.dc-cbx__row {
+  display: grid;
+  grid-template-columns: 1fr auto auto; /* input | clear | caret */
+  gap: 6px;
+  align-items: center;
+}
+
+/* Text input inside the glass surface */
+.dc-cbx__input {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  padding: 10px 12px;
+  border-radius: 10px;
+  outline: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35);
+}
+.dc-cbx__input::placeholder { opacity: .7; }
+
+.dc-cbx__input:focus-visible {
+  box-shadow:
+    var(--ring, 0 0 0 3px rgba(79,70,229,.45)),
+    inset 0 0 0 1px rgba(255,255,255,0.6);
+}
+
+/* Buttons sit on their own tiny glass chips to feel tactile */
+.dc-cbx__caret,
+.dc-cbx__clear {
+  padding: 8px 10px;
+  line-height: 1;
+}
+
+/* Floating panel (listbox) */
+.dc-cbx__panel {
+  padding: 6px;
+  z-index: 1000;
+  /* width is set inline to match the trigger; this styles the chrome */
+}
+
+.dc-cbx__list {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  display: grid;
+  gap: 4px;
+  max-height: 280px;
+  overflow: auto;
+}
+
+/* Option button */
+.dc-cbx__item {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content 1fr;
+  gap: 8px;
+  align-items: center;
+  font-weight: 600;
+}
+
+.dc-cbx__item.is-active { text-decoration: underline; }
+.dc-cbx__item.is-selected { font-weight: 800; }
+.dc-cbx__icon { opacity: .9; }
+
+.dc-cbx__empty {
+  padding: 10px 12px;
+  opacity: .85;
+}
+
+/* Reduced motion: avoid animating blur/saturation */
+@media (prefers-reduced-motion: reduce) {
+  .dc-cbx__item,
+  .dc-cbx__caret,
+  .dc-cbx__clear { transition: none !important; }
+}
+
+/* High contrast / forced colors */
+@media (forced-colors: active) {
+  .dc-cbx__input { box-shadow: none; border: 1px solid CanvasText; }
+}

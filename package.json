@@ -35,7 +35,10 @@
     "./tabs":    { "types": "./dist/tabs/index.d.ts",    "import": "./dist/tabs/index.js",    "require": "./dist/tabs/index.cjs" },
     "./tooltip": { "types": "./dist/tooltip/index.d.ts", "import": "./dist/tooltip/index.js", "require": "./dist/tooltip/index.cjs" },
     "./form":    { "types": "./dist/form/index.d.ts",    "import": "./dist/form/index.js",    "require": "./dist/form/index.cjs" },
-    "./navbar":  { "types": "./dist/navbar/index.d.ts",  "import": "./dist/navbar/index.js",  "require": "./dist/navbar/index.cjs" }
+    "./navbar":  { "types": "./dist/navbar/index.d.ts",  "import": "./dist/navbar/index.js",  "require": "./dist/navbar/index.cjs" },
+    "./popover":  { "types": "./dist/popover/index.d.ts",  "import": "./dist/popover/index.js",  "require": "./dist/popover/index.cjs" },
+    "./menu":     { "types": "./dist/menu/index.d.ts",     "import": "./dist/menu/index.js",     "require": "./dist/menu/index.cjs" },
+    "./select":  { "types": "./dist/select/index.d.ts",  "import": "./dist/select/index.js",  "require": "./dist/select/index.cjs" }
   },
   "peerDependencies": {
     "react": ">=18",

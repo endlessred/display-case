@@ -4,6 +4,8 @@
 @import "./dialog.css";
 @import "./form.css";
 @import "./navbar.css";
+@import "./menu.css";
+@import "./select.css";
 
 :root { --ring: 0 0 0 3px rgba(79,70,229,.45); }
 :focus-visible { outline: none; box-shadow: var(--ring); }

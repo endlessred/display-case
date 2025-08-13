@@ -6,3 +6,6 @@ export * from "./tabs";
 export * from "./tooltip";
 export * from "./form";
 export * from './navbar';
+export * from './popover';
+export * from './menu';
+export * from './select';
