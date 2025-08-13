@@ -1,0 +1,16 @@
+.dc-alert {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: start;
+  padding: 12px;
+}
+
+.dc-alert__main { display: grid; gap: 4px; }
+.dc-alert__title { font-weight: 800; }
+.dc-alert__desc { opacity: .92; }
+
+.dc-alert__side { display: inline-flex; gap: 6px; align-items: center; }
+
+/* Banner helper (optional) */
+.dc-alert--banner { padding: 10px 14px; width: 100%; }
