@@ -38,7 +38,10 @@
     "./navbar":  { "types": "./dist/navbar/index.d.ts",  "import": "./dist/navbar/index.js",  "require": "./dist/navbar/index.cjs" },
     "./popover":  { "types": "./dist/popover/index.d.ts",  "import": "./dist/popover/index.js",  "require": "./dist/popover/index.cjs" },
     "./menu":     { "types": "./dist/menu/index.d.ts",     "import": "./dist/menu/index.js",     "require": "./dist/menu/index.cjs" },
-    "./select":  { "types": "./dist/select/index.d.ts",  "import": "./dist/select/index.js",  "require": "./dist/select/index.cjs" }
+    "./select":  { "types": "./dist/select/index.d.ts",  "import": "./dist/select/index.js",  "require": "./dist/select/index.cjs" },
+    "./toast":   { "types": "./dist/toast/index.d.ts",   "import": "./dist/toast/index.js",   "require": "./dist/toast/index.cjs" },
+   "./alert":   { "types": "./dist/alert/index.d.ts",   "import": "./dist/alert/index.js",   "require": "./dist/alert/index.cjs" },
+   "./loading": { "types": "./dist/loading/index.d.ts", "import": "./dist/loading/index.js", "require": "./dist/loading/index.cjs" }
   },
   "peerDependencies": {
     "react": ">=18",

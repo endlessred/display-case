@@ -16,7 +16,10 @@ export default defineConfig({
     "navbar/index": "src/navbar/index.ts",
     "popover/index": "src/popover/index.ts",
     "menu/index": "src/menu/index.ts",
-    "select/index": "src/select/index.ts"
+    "select/index": "src/select/index.ts",
+    "toast/index": "src/toast/index.ts",
+    "alert/index": "src/alert/index.ts",
+    "loading/index": "src/loading/index.ts"
   },
   external: ["react", "react-dom"],
   minify: true
