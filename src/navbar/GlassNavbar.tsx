@@ -1,114 +1,112 @@
+// src/navbar/GlassNavbar.tsx
 import * as React from 'react';
 import clsx from 'clsx';
+import { mergeRefs } from '../utils/refs';
+import { composeMouseHandlers, TriggerLikeProps } from '../utils/events';
 
-export type NavLink = { label: string; href: string; current?: boolean };
 export type GlassNavbarProps = React.HTMLAttributes<HTMLElement> & {
+  /** Collapse into a menu below this measured navbar width (px). Default 720. */
+  collapsedAt?: number;
+  /** Optional brand slot on the left. */
   brand?: React.ReactNode;
-  links?: NavLink[];
-  actions?: React.ReactNode;
-  tone?: 'default' | 'primary' | 'success' | 'info' | 'danger';
-  sticky?: boolean;
-  collapseAt?: number; // px
+  /** Right slot (e.g., avatar). */
+  right?: React.ReactNode;
 };
 
 export function GlassNavbar({
-  brand, links, actions, tone, sticky, collapseAt = 768, className, children, ...rest
+  collapsedAt = 720,
+  brand,
+  right,
+  className,
+  children,
+  ...rest
 }: GlassNavbarProps) {
+  const hostRef = React.useRef<HTMLElement | null>(null);
+  const [collapsed, setCollapsed] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-  const [isDesktop, setIsDesktop] = React.useState(false);
 
-  // Esc closes mobile panel
+  // Measure the navbar's own width (works in Storybook if canvas is narrow)
   React.useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
-    window.addEventListener('keydown', onKey, { capture: true });
-    return () => window.removeEventListener('keydown', onKey, { capture: true });
-  }, [open]);
-
-  // Use window width breakpoint (robust in Storybook & real apps)
-  React.useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const mq = window.matchMedia(`(min-width: ${collapseAt}px)`);
-    const update = () => setIsDesktop(mq.matches);
-    update();
-    // modern browsers
-    mq.addEventListener?.('change', update);
-    // safari fallback
-    // @ts-expect-error older API
-    mq.addListener?.(update);
-    return () => {
-      mq.removeEventListener?.('change', update);
-      // @ts-expect-error older API
-      mq.removeListener?.(update);
-    };
-  }, [collapseAt]);
-
-  const onLinkClick = () => setOpen(false);
+    const el = hostRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      const w = entries[0].contentRect.width;
+      setCollapsed(w < collapsedAt);
+      // auto-close when expanding back
+      if (w >= collapsedAt) setOpen(false);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [collapsedAt]);
 
   return (
-    <nav
-      aria-label="Main"
-      className={clsx(
-        'ui-glass',
-        'dc-navbar',
-        tone && `tone-${tone}`,
-        sticky && 'dc-navbar--sticky',
-        open && 'dc-navbar--open',
-        isDesktop && 'dc-navbar--desktop',
-        className
+    <nav ref={hostRef} className={clsx('ui-glass', 'dc-navbar', className)} {...rest}>
+      <div className="dc-nav__row">
+        <div className="dc-nav__brand">{brand}</div>
+
+        {collapsed ? (
+          <button
+            type="button"
+            className={clsx('ui-glass', 'dc-btn', 'dc-nav__toggle', open && 'is-open')}
+            aria-label="Toggle navigation"
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            ☰
+          </button>
+        ) : (
+          <ul className="dc-nav__items" role="menubar">{children}</ul>
+        )}
+
+        <div className="dc-nav__right">{right}</div>
+      </div>
+
+      {collapsed && open && (
+        <ul className="dc-nav__items is-collapsed" role="menu" onClick={() => setOpen(false)}>
+          {children}
+        </ul>
       )}
-      {...rest}
-    >
-      <div className="dc-navbar__row">
-        <div className="dc-navbar__brand">{brand}</div>
-
-        <ul className="dc-navbar__links">
-          {links?.map(l => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                aria-current={l.current ? 'page' : undefined}
-                className={clsx('dc-navlink', l.current && 'dc-navlink--current')}
-                onClick={onLinkClick}
-              >
-                {l.label}
-              </a>
-            </li>
-          ))}
-          {children}
-        </ul>
-
-        <div className="dc-navbar__actions">{actions}</div>
-
-        <button
-          className="ui-glass dc-btn dc-navbar__toggle"
-          aria-controls="dc-menu"
-          aria-expanded={open}
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          onClick={() => setOpen(s => !s)}
-        >
-          {open ? '✕' : '☰'}
-        </button>
-      </div>
-
-      <div id="dc-menu" className="dc-navbar__panel" hidden={!open}>
-        <ul className="dc-navbar__panel-links">
-          {links?.map(l => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                aria-current={l.current ? 'page' : undefined}
-                className={clsx('dc-navlink', l.current && 'dc-navlink--current')}
-                onClick={onLinkClick}
-              >
-                {l.label}
-              </a>
-            </li>
-          ))}
-          {children}
-        </ul>
-        {actions && <div className="dc-navbar__panel-actions">{actions}</div>}
-      </div>
     </nav>
   );
 }
+
+export type GlassNavItemProps = {
+  /** Render as any element; defaults to <a>. */
+  as?: React.ElementType;
+  href?: string;               // used when as='a'
+  active?: boolean;
+  icon?: React.ReactNode;
+  children?: React.ReactNode;
+} & Omit<React.ComponentPropsWithoutRef<'a'>, 'as' | 'href'>;
+
+export const GlassNavItem = React.forwardRef<HTMLElement, GlassNavItemProps>(function GlassNavItem(
+  { as, href, active, icon, children, className, onClick, ...rest },
+  ref
+) {
+  const Comp = (as || 'a') as React.ElementType;
+  const localRef = React.useRef<HTMLElement | null>(null);
+  const setRef = React.useMemo(
+    () => mergeRefs<HTMLElement>(localRef, ref as React.Ref<HTMLElement>),
+    [ref]
+  );
+
+  const ours: React.MouseEventHandler<HTMLElement> = () => { /* could close menus, etc. */ };
+
+  return (
+    <li role="none" className="dc-nav__item">
+      <Comp
+        // ✅ no ts-expect-error needed; merged refs typed to HTMLElement
+        ref={setRef}
+        role="menuitem"
+        href={Comp === 'a' ? href : undefined}
+        className={clsx('dc-nav__link', active && 'is-active', className)}
+        // ✅ compose handlers with generic HTMLElement type
+        onClick={composeMouseHandlers(onClick as React.MouseEventHandler<HTMLElement> | undefined, ours)}
+        {...(rest as any)}
+      >
+        {icon && <span className="dc-nav__ico" aria-hidden>{icon}</span>}
+        <span className="dc-nav__label">{children}</span>
+      </Comp>
+    </li>
+  );
+});

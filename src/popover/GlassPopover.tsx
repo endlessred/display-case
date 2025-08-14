@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { useFloating, offset, flip, shift, autoUpdate } from '@floating-ui/react-dom';
 import clsx from 'clsx';
+import { mergeRefs } from '../utils/refs';
 
 export type GlassPopoverProps = {
   open?: boolean;
@@ -29,14 +30,18 @@ export function GlassPopover({ open, defaultOpen, onOpenChange, placement = 'bot
   const isOpen = isControlled ? !!open : internal;
   const setOpen = (o: boolean) => { if (!isControlled) setInternal(o); onOpenChange?.(o); };
 
-  const floating = useFloating({ placement, middleware: [offset(8), flip(), shift({ padding: 8 })] });
+  const panelRef = React.useRef<HTMLDivElement | null>(null);
 
+
+
+  const floating = useFloating({ placement, middleware: [offset(8), flip(), shift({ padding: 8 })] });
   React.useEffect(() => {
     const ref = floating.refs.reference.current;
     const flo = floating.refs.floating.current;
     if (!ref || !flo || !isOpen) return;
     return autoUpdate(ref, flo, floating.update);
   }, [isOpen, floating.refs.reference, floating.refs.floating, floating.update]);
+
 
   React.useEffect(() => {
     if (!isOpen) return;
@@ -51,6 +56,8 @@ export function GlassPopover({ open, defaultOpen, onOpenChange, placement = 'bot
     </Ctx.Provider>
   );
 }
+
+
 
 export type GlassPopoverTriggerProps = { asChild?: boolean } & React.HTMLAttributes<HTMLElement>;
 export function GlassPopoverTrigger({ asChild, ...props }: GlassPopoverTriggerProps) {
@@ -116,9 +123,14 @@ export function GlassPopoverContent({ className, children, ...rest }: GlassPopov
 
   if (!open) return null;
 
+  const setPanelRef = React.useMemo(
+  () => mergeRefs<HTMLDivElement>(panelRef, refs.setFloating as unknown as React.Ref<HTMLDivElement>),
+  [refs.setFloating]
+);
+
   return createPortal(
     <div
-      ref={node => { panelRef.current = node!; refs.setFloating(node as any); }}
+      ref={setPanelRef}
       role="dialog"
       className={clsx('ui-glass', 'dc-popover', tone && `tone-${tone}`, className)}
       style={{ position: (floating.strategy as any), top: (floating.y ?? 0), left: (floating.x ?? 0), padding: 8, minWidth: 200 }}

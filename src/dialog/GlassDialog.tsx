@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import clsx from 'clsx';
+import {
+  TriggerLikeProps,
+  DOMClickHandler,
+  composeMouseHandlers
+} from '../utils/events';
+
 
 type DialogContextValue = {
   open: boolean;
@@ -13,6 +19,8 @@ export type GlassDialogProps = {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  trigger?: React.ReactElement<any>;
+  title?: React.ReactNode;
   children: React.ReactNode;
 };
 
@@ -42,10 +50,11 @@ function useDialogCtx() {
 export type GlassDialogTriggerProps = React.ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean };
 export function GlassDialogTrigger({ asChild, ...rest }: GlassDialogTriggerProps) {
   const { setOpen, triggerRef } = useDialogCtx();
-  const onClick = (e: React.MouseEvent) => {
-    rest.onClick?.(e);
-    setOpen(true);
-  };
+  const ours: DOMClickHandler<HTMLElement> = () => setOpen(true);
+const onClick = composeMouseHandlers(
+  (rest as TriggerLikeProps).onClick,
+  ours
+);
 
   if (asChild) {
     return React.cloneElement(React.Children.only(rest.children as React.ReactElement), {

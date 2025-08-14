@@ -1,1 +1,1 @@
-export { GlassPopover, GlassPopoverTrigger, GlassPopoverContent } from './GlassPopover';
+export * from './GlassPopover';

@@ -4,11 +4,14 @@ import clsx from 'clsx';
 type Tone = 'default' | 'primary' | 'success' | 'info' | 'danger';
 type TypeMode = 'single' | 'multiple';
 
-export type GlassAccordionProps = React.HTMLAttributes<HTMLElement> & {
+export type GlassAccordionProps = Omit<
+    React.HTMLAttributes<HTMLElement>,
+    'value' | 'defaultValue' | 'onChange'
+    > & {
   type?: TypeMode;                 // 'single' (default) or 'multiple'
-  value?: string[] | string | null;
-  defaultValue?: string[] | string | null;
-  onValueChange?: (val: string[] | string | null) => void;
+  value?: string | string[] | null;
+  defaultValue?: string | string[] | null;
+  onValueChange?: (val: string | string[] | null) => void;
   collapsible?: boolean;           // for single: allow closing the last open
   tone?: Tone;
   children: React.ReactNode;
@@ -30,7 +33,7 @@ const useACtx = () => {
 
 export function GlassAccordion({
   type = 'single',
-  defaultValue = type === 'single' ? null : [],
+  defaultValue = type === 'single' ? null : ([] as string[]),
   value,
   onValueChange,
   collapsible = true,
@@ -40,7 +43,7 @@ export function GlassAccordion({
   ...rest
 }: GlassAccordionProps) {
   const isControlled = value !== undefined;
-  const [inner, setInner] = React.useState<string[] | string | null>(defaultValue);
+  const [inner, setInner] = React.useState<string | string[] | null>(defaultValue);
   const current = isControlled ? value : inner;
 
   const openSet = React.useMemo(() => {

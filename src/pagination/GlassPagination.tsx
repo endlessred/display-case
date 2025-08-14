@@ -1,7 +1,7 @@
 import * as React from 'react';
 import clsx from 'clsx';
 
-export type GlassPaginationProps = React.HTMLAttributes<nav> & {
+export type GlassPaginationProps = Omit<React.ComponentPropsWithoutRef<'nav'>, 'children'> & {
   page: number;                       // 1-based
   pageCount: number;                  // >= 1
   onPageChange: (page: number) => void;
