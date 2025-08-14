@@ -23,7 +23,9 @@ export default defineConfig({
    "loading/index": "src/loading/index.ts",
    "badge/index": "src/badge/index.ts",
    "tag/index": "src/tag/index.ts",
-   "avatar/index": "src/avatar/index.ts"
+   "avatar/index": "src/avatar/index.ts",
+   "breadcrumbs/index": "src/breadcrumbs/index.ts",
+   "pagination/index": "src/pagination/index.ts"
   },
   external: ["react", "react-dom"],
   minify: true

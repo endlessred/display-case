@@ -1,0 +1,33 @@
+.dc-bc {
+  padding: 8px 10px;
+}
+
+.dc-bc__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dc-bc__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* separator */
+.dc-bc__item + .dc-bc__item::before {
+  content: '/';
+  opacity: .7;
+  margin: 0 6px 0 2px;
+}
+
+.dc-bc__link {
+  font-weight: 700;
+  text-decoration: none;
+  color: inherit;
+}
+.dc-bc__link:hover,
+.dc-bc__link:focus-visible { text-decoration: underline; }
+.dc-bc__link--current { text-decoration: none; cursor: default; }

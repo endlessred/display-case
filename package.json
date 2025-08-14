@@ -29,7 +29,9 @@
    "./loading": { "types": "./dist/loading/index.d.ts", "import": "./dist/loading/index.js", "require": "./dist/loading/index.cjs" },
    "./badge":   { "types": "./dist/badge/index.d.ts",   "import": "./dist/badge/index.js",   "require": "./dist/badge/index.cjs" },
    "./tag":     { "types": "./dist/tag/index.d.ts",     "import": "./dist/tag/index.js",     "require": "./dist/tag/index.cjs" },
-   "./avatar":  { "types": "./dist/avatar/index.d.ts",  "import": "./dist/avatar/index.js",  "require": "./dist/avatar/index.cjs" }
+   "./avatar":  { "types": "./dist/avatar/index.d.ts",  "import": "./dist/avatar/index.js",  "require": "./dist/avatar/index.cjs" },
+   "./breadcrumbs": { "types": "./dist/breadcrumbs/index.d.ts", "import": "./dist/breadcrumbs/index.js", "require": "./dist/breadcrumbs/index.cjs" },
+   "./pagination":  { "types": "./dist/pagination/index.d.ts",  "import": "./dist/pagination/index.js",  "require": "./dist/pagination/index.cjs" }
   },
   "peerDependencies": {
     "react": ">=18",

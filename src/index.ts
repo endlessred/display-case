@@ -15,3 +15,5 @@ export * from './loading';
 export * from './badge';
 export * from './tag';
 export * from './avatar';
+export * from './breadcrumbs';
+export * from './pagination';
