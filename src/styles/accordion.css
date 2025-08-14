@@ -1,0 +1,36 @@
+.dc-acc { display: grid; gap: 8px; padding: 8px; }
+
+.dc-acc__item {
+  display: grid;
+  gap: 6px;
+  padding: 4px;
+}
+
+.dc-acc__header { margin: 0; }
+
+.dc-acc__trigger {
+  width: 100%;
+  justify-content: space-between;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 12px;
+  font-weight: 800;
+}
+
+/* chevron affordance via pseudo */
+.dc-acc__trigger::after {
+  content: '▾';
+  transition: transform .18s ease;
+  opacity: .9;
+}
+.dc-acc__trigger.is-open::after { transform: rotate(-180deg); }
+@media (prefers-reduced-motion: reduce){
+  .dc-acc__trigger::after { transition: none !important; }
+}
+
+.dc-acc__panel {
+  padding: 8px 10px 10px;
+}
+
+/* disabled */
+.is-disabled { opacity: .6; pointer-events: none; }

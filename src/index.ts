@@ -17,3 +17,4 @@ export * from './tag';
 export * from './avatar';
 export * from './breadcrumbs';
 export * from './pagination';
+export * from './accordion';
