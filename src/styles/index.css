@@ -9,6 +9,8 @@
 @import "./toast.css"; 
 @import "./alert.css"; 
 @import "./loading.css";
+@import "./badge.css";
+@import "./avatar.css";
 
 :root { --ring: 0 0 0 3px rgba(79,70,229,.45); }
 :focus-visible { outline: none; box-shadow: var(--ring); }

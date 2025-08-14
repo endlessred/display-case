@@ -1,0 +1,23 @@
+/* Badge & Tag share similar chip ergonomics, both retro-cornered via .ui-glass */
+.dc-badge, .dc-tag {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.dc-badge--sm { padding: 4px 8px; font-size: .88rem; }
+.dc-badge--md { padding: 6px 10px; font-size: .94rem; }
+
+.dc-badge__ico, .dc-tag__ico { opacity: .9; display: inline-flex; }
+.dc-badge__label, .dc-tag__label { white-space: nowrap; }
+
+.dc-tag__remove { padding: 4px 6px; line-height: 1; }
+
+/* subtle pressed state for chips */
+.dc-badge:active, .dc-tag:active { transform: translateY(1px); }
+@media (prefers-reduced-motion: reduce){ .dc-badge:active, .dc-tag:active { transform: none; } }

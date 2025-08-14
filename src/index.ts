@@ -12,3 +12,6 @@ export * from './select';
 export * from './toast'; 
 export * from './alert';
 export * from './loading';
+export * from './badge';
+export * from './tag';
+export * from './avatar';
