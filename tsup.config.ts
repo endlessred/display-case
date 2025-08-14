@@ -26,7 +26,8 @@ export default defineConfig({
    "avatar/index": "src/avatar/index.ts",
    "breadcrumbs/index": "src/breadcrumbs/index.ts",
    "pagination/index": "src/pagination/index.ts",
-   "accordion/index": "src/accordion/index.ts"
+   "accordion/index": "src/accordion/index.ts",
+   "table/index": "src/table/index.ts"
   },
   external: ["react", "react-dom"],
   minify: true

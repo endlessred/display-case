@@ -32,7 +32,8 @@
    "./avatar":  { "types": "./dist/avatar/index.d.ts",  "import": "./dist/avatar/index.js",  "require": "./dist/avatar/index.cjs" },
    "./breadcrumbs": { "types": "./dist/breadcrumbs/index.d.ts", "import": "./dist/breadcrumbs/index.js", "require": "./dist/breadcrumbs/index.cjs" },
    "./pagination":  { "types": "./dist/pagination/index.d.ts",  "import": "./dist/pagination/index.js",  "require": "./dist/pagination/index.cjs" },
-   "./accordion":   { "types": "./dist/accordion/index.d.ts",   "import": "./dist/accordion/index.js",   "require": "./dist/accordion/index.cjs" }
+   "./accordion":   { "types": "./dist/accordion/index.d.ts",   "import": "./dist/accordion/index.js",   "require": "./dist/accordion/index.cjs" },
+   "./table": { "types": "./dist/table/index.d.ts", "import": "./dist/table/index.js", "require": "./dist/table/index.cjs" }
   },
   "peerDependencies": {
     "react": ">=18",

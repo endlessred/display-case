@@ -1,0 +1,85 @@
+.dc-table { padding: 8px; }
+
+/* Scroll container (enables sticky header) */
+.dc-table__wrap { overflow: auto; max-width: 100%; }
+
+.dc-table__tbl {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Head */
+.dc-table__head { position: relative; }
+.dc-table__th {
+  position: relative;
+  text-align: left;
+  font-weight: 800;
+  padding: 12px;
+  white-space: nowrap;
+  top: 0;
+  border-bottom: 1px solid rgba(255,255,255,.25);
+}
+.dc-table__tbl.is-sticky .dc-table__th {
+  position: sticky;
+  background: color-mix(in oklab, white 18%, transparent);
+  backdrop-filter: saturate(140%) blur(6px);
+  z-index: 1;
+}
+.dc-table__th.al-center { text-align: center; }
+.dc-table__th.al-right { text-align: right; }
+
+/* Sort */
+.dc-table__sort {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  gap: 8px;
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+.dc-table__th.is-sortable .dc-table__th-label { text-decoration: underline; text-underline-offset: 2px; }
+.dc-table__sort-ico {
+  width: 10px; height: 10px; display: inline-block;
+  mask: conic-gradient(from 0deg, transparent 0 75%, currentColor 0);
+  background: currentColor; opacity: .55;
+  transform: rotate(90deg); /* neutral icon (caret) */
+}
+.dc-table__sort-ico.asc  { transform: rotate(180deg); opacity: .9; } /* up triangle */
+.dc-table__sort-ico.desc { transform: rotate(0deg);   opacity: .9; } /* down triangle */
+
+/* Body */
+.dc-table__cell {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+  vertical-align: middle;
+}
+.dc-table__cell.al-center { text-align: center; }
+.dc-table__cell.al-right { text-align: right; }
+
+/* Zebra + hover */
+.dc-table__tbl.is-zebra .dc-table__row:nth-child(odd) .dc-table__cell { background: color-mix(in oklab, white 6%, transparent); }
+.dc-table__row:hover .dc-table__cell { background: color-mix(in oklab, white 10%, transparent); }
+
+/* Dense */
+.dc-table__tbl.is-dense .dc-table__th,
+.dc-table__tbl.is-dense .dc-table__cell { padding: 8px 10px; }
+
+/* Empty / Loading rows */
+.dc-table__row.is-empty td,
+.dc-table__row.is-loading td {
+  text-align: center;
+  font-weight: 700;
+  opacity: .9;
+}
+
+/* Forced colors */
+@media (forced-colors: active){
+  .dc-table__th, .dc-table__cell { border-bottom: 1px solid CanvasText; }
+  .dc-table__tbl.is-sticky .dc-table__th { background: Canvas; backdrop-filter: none; }
+}

@@ -15,6 +15,7 @@
 @import "./pagination.css";
 @import "./accordion.css";
 @import "./textarea.css";
+@import "./table.css";
 
 
 :root { --ring: 0 0 0 3px rgba(79,70,229,.45); }
