@@ -1,51 +1,76 @@
 import * as React from 'react';
 import clsx from 'clsx';
 
+const ELLIPSIS = '…' as const;
+
+type Tone = 'default' | 'primary' | 'success' | 'info' | 'danger';
+
 export type GlassPaginationProps = Omit<React.ComponentPropsWithoutRef<'nav'>, 'children'> & {
-  page: number;                       // 1-based
-  pageCount: number;                  // >= 1
+  /** 1-based current page */
+  page: number;
+  /** total number of pages (>=1) */
+  pageCount: number;
   onPageChange: (page: number) => void;
-  siblingCount?: number;              // pages around current (default 1)
-  boundaryCount?: number;             // pages at edges (default 1)
-  tone?: 'default' | 'primary' | 'success' | 'info' | 'danger';
-  showEdges?: boolean;                // show « and » buttons (default true)
-  showPrevNext?: boolean;             // show ‹ and › buttons (default true)
-  compact?: boolean;                  // smaller chips
+  /** how many siblings to show around the current page */
+  siblingCount?: number;
+  /** how many boundary pages to always show at the start/end */
+  boundaryCount?: number;
+  tone?: Tone;
+  /** show « and » */
+  showEdges?: boolean;
+  /** show ‹ and › */
+  showPrevNext?: boolean;
+  /** compact sizing (sm buttons) */
+  compact?: boolean;
+  className?: string;
 };
 
-const DOTS = '…';
+/** Build a pagination range with ellipses. */
+function buildRange(
+  current: number,
+  total: number,
+  siblingCount = 1,
+  boundaryCount = 1
+): Array<number | typeof ELLIPSIS> {
+  const totalNumbers = siblingCount * 2 + 3 + boundaryCount * 2;
+  const totalBlocks = totalNumbers + 2; // including two ellipses
 
-function useRange(page: number, count: number, sibling = 1, boundary = 1) {
-  const totalNumbers = sibling * 2 + 3 + boundary * 2;
-  const totalBlocks = totalNumbers + 2; // with two DOTS
-
-  if (count <= totalNumbers) {
-    return Array.from({ length: count }, (_, i) => i + 1);
+  if (total <= totalNumbers) {
+    return Array.from({ length: total }, (_, i) => i + 1);
   }
 
-  const left = Math.max(page - sibling, boundary + 2);
-  const right = Math.min(page + sibling, count - boundary - 1);
-  const showLeftDots = left > boundary + 2;
-  const showRightDots = right < count - boundary - 1;
+  const leftSibling = Math.max(current - siblingCount, boundaryCount + 2);
+  const rightSibling = Math.min(current + siblingCount, total - boundaryCount - 1);
 
-  const range: (number | typeof DOTS)[] = [];
+  const showLeftDots = leftSibling > boundaryCount + 2;
+  const showRightDots = rightSibling < total - (boundaryCount + 1);
 
-  // left boundary
-  for (let i = 1; i <= boundary; i++) range.push(i);
+  const range: Array<number | typeof ELLIPSIS> = [];
 
-  if (showLeftDots) range.push(DOTS);
-  else for (let i = boundary + 1; i < left; i++) range.push(i);
+  // Left boundary
+  for (let i = 1; i <= boundaryCount; i++) range.push(i);
 
-  // middle
-  for (let i = left; i <= right; i++) range.push(i);
+  // Left dots or additional pages
+  if (showLeftDots) {
+    range.push(ELLIPSIS);
+  } else {
+    for (let i = boundaryCount + 1; i < leftSibling; i++) range.push(i);
+  }
 
-  if (showRightDots) range.push(DOTS);
-  else for (let i = right + 1; i < count - boundary + 1; i++) range.push(i);
+  // Middle
+  for (let i = leftSibling; i <= rightSibling; i++) range.push(i);
 
-  // right boundary
-  for (let i = count - boundary + 1; i <= count; i++) range.push(i);
+  // Right dots or additional pages
+  if (showRightDots) {
+    range.push(ELLIPSIS);
+  } else {
+    for (let i = rightSibling + 1; i <= total - boundaryCount; i++) range.push(i);
+  }
 
-  // sanity cap
+  // Right boundary
+  for (let i = total - boundaryCount + 1; i <= total; i++) range.push(i);
+
+  // Guard against overlong output in extreme cases
   return range.slice(0, totalBlocks);
 }
 
@@ -62,16 +87,19 @@ export function GlassPagination({
   className,
   ...rest
 }: GlassPaginationProps) {
-  const p = Math.max(1, Math.min(page, Math.max(1, pageCount)));
-  const range = useRange(p, Math.max(1, pageCount), siblingCount, boundaryCount);
+  const current = Math.max(1, Math.min(page, Math.max(1, pageCount)));
+  const items = buildRange(current, Math.max(1, pageCount), siblingCount, boundaryCount);
 
-  const go = (n: number) => {
-    const clamped = Math.max(1, Math.min(n, pageCount));
-    if (clamped !== p) onPageChange(clamped);
+  const go = (p: number) => {
+    const clamped = Math.max(1, Math.min(p, pageCount));
+    if (clamped !== current) onPageChange(clamped);
   };
 
-  const chip = (content: React.ReactNode, opts: { active?: boolean; disabled?: boolean; aria?: string; onClick?: () => void } = {}) => (
-    <li>
+  const renderBtn = (
+    label: React.ReactNode,
+    opts: { key?: React.Key; active?: boolean; aria?: string; disabled?: boolean; onClick?: () => void }
+  ) => (
+    <li key={opts.key ?? String(label)}>
       <button
         className={clsx(
           'ui-glass',
@@ -86,30 +114,58 @@ export function GlassPagination({
         disabled={opts.disabled}
         onClick={opts.onClick}
       >
-        {content}
+        {label}
       </button>
     </li>
   );
 
   return (
-    <nav
-      role="navigation"
-      aria-label="Pagination"
-      className={clsx('dc-pager', className)}
-      {...rest}
-    >
+    <nav role="navigation" aria-label="Pagination" className={clsx('dc-pager', className)} {...rest}>
       <ul className="dc-pager__list">
-        {showEdges && chip('«', { aria: 'First page', disabled: p === 1, onClick: () => go(1) })}
-        {showPrevNext && chip('‹', { aria: 'Previous page', disabled: p === 1, onClick: () => go(p - 1) })}
+        {showEdges &&
+          renderBtn('«', {
+            key: 'first',
+            aria: 'First page',
+            disabled: current === 1,
+            onClick: () => go(1),
+          })}
+        {showPrevNext &&
+          renderBtn('‹', {
+            key: 'prev',
+            aria: 'Previous page',
+            disabled: current === 1,
+            onClick: () => go(current - 1),
+          })}
 
-        {range.map((it, i) =>
-          it === DOTS
-            ? <li key={`d-${i}`} className="dc-page__dots" aria-hidden>{DOTS}</li>
-            : chip(it, { active: it === p, aria: `Page ${it}`, onClick: () => go(Number(it)) })
+        {items.map((item, i) =>
+          item === ELLIPSIS ? (
+            <li key={`dots-${i}`} className="dc-page__dots" aria-hidden>
+              {ELLIPSIS}
+            </li>
+          ) : (
+            renderBtn(item, {
+              key: `p-${item}-${i}`,
+              active: item === current,
+              aria: `Page ${item}`,
+              onClick: () => go(Number(item)),
+            })
+          )
         )}
 
-        {showPrevNext && chip('›', { aria: 'Next page', disabled: p === pageCount, onClick: () => go(p + 1) })}
-        {showEdges && chip('»', { aria: 'Last page', disabled: p === pageCount, onClick: () => go(pageCount) })}
+        {showPrevNext &&
+          renderBtn('›', {
+            key: 'next',
+            aria: 'Next page',
+            disabled: current === pageCount,
+            onClick: () => go(current + 1),
+          })}
+        {showEdges &&
+          renderBtn('»', {
+            key: 'last',
+            aria: 'Last page',
+            disabled: current === pageCount,
+            onClick: () => go(pageCount),
+          })}
       </ul>
     </nav>
   );

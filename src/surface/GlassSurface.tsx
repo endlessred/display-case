@@ -1,44 +1,55 @@
 import * as React from 'react';
-import type { ElementType, ComponentPropsWithoutRef, PropsWithChildren } from 'react';
 import clsx from 'clsx';
 
-type SurfaceOwnProps = {
+// adjust types to whatever you already have
+export type GlassSurfaceProps = React.ComponentPropsWithoutRef<'div'> & {
+  as?: keyof JSX.IntrinsicElements;
   elevation?: 'sm' | 'md' | 'lg';
-  interactive?: boolean;
-  noise?: boolean;
   tone?: 'default' | 'primary' | 'success' | 'info' | 'danger';
+  /** Optional manual override; true = force no backdrop */
+  noBackdrop?: boolean;
 };
 
-type AsProp<C extends ElementType> = { as?: C };
-type PropsToOmit<C extends ElementType, P> = keyof (AsProp<C> & P);
+export function GlassSurface({
+  as = 'div',
+  elevation = 'md',
+  tone,
+  className,
+  children,
+  noBackdrop: noBackdropProp,
+  ...rest
+}: GlassSurfaceProps) {
+  const Tag = as as any;
 
-export type PolymorphicProps<C extends ElementType, P> =
-  PropsWithChildren<P & AsProp<C>> &
-  Omit<ComponentPropsWithoutRef<C>, PropsToOmit<C, P>>;
+  // null = unknown (matches server output); boolean after mount
+  const [noBackdrop, setNoBackdrop] = React.useState<boolean | null>(null);
 
-export type GlassSurfaceProps<C extends ElementType = 'div'> =
-  PolymorphicProps<C, SurfaceOwnProps>;
+  React.useEffect(() => {
+    if (noBackdropProp != null) {
+      setNoBackdrop(!!noBackdropProp);
+      return;
+    }
+    let supported = false;
+    try {
+      // Only run on client; guard handles old browsers
+      // eslint-disable-next-line no-restricted-globals
+      const css = typeof CSS !== 'undefined' ? CSS : undefined;
+      supported = !!(
+        css?.supports?.('backdrop-filter', 'blur(0px)') ||
+        css?.supports?.('-webkit-backdrop-filter', 'blur(0px)')
+      );
+    } catch {
+      supported = false;
+    }
+    setNoBackdrop(!supported);
+  }, [noBackdropProp]);
 
-const supportsBackdrop =
-  typeof window !== 'undefined' &&
-  typeof CSS !== 'undefined' &&
-  (CSS.supports('backdrop-filter: blur(1px)') ||
-   CSS.supports('-webkit-backdrop-filter: blur(1px)'));
-
-export function GlassSurface<C extends ElementType = 'div'>(
-  { as, elevation = 'md', interactive, className, tone, children, ...rest }: GlassSurfaceProps<C>
-) {
-  const Tag = (as || 'div') as ElementType;
   return (
     <Tag
-      data-no-backdrop={supportsBackdrop ? undefined : ''}
-      className={clsx(
-        'ui-glass',
-        `elev-${elevation}`,
-        interactive && 'interactive',
-        tone && `tone-${tone}`,
-        className
-      )}
+      // In case the attribute appears/disappears post-hydration
+      suppressHydrationWarning
+      data-no-backdrop={noBackdrop ? '' : undefined}
+      className={clsx('ui-glass', `elev-${elevation}`, tone && `tone-${tone}`, className)}
       {...rest}
     >
       {children}
