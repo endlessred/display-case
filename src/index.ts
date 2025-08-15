@@ -19,3 +19,4 @@ export * from './breadcrumbs/index.js';
 export * from './pagination/index.js';
 export * from './accordion/index.js';
 export * from './table/index.js';
+export * from './ai';

@@ -1,0 +1,156 @@
+/* ---------- Chat container ---------- */
+.dc-chat {
+  display: grid;
+  gap: 12px;
+  max-height: 60vh;
+  overflow: auto;
+  padding: 8px;
+  overscroll-behavior: contain;
+}
+
+/* ---------- Message layout ---------- */
+/* Base: avatar left (col 1), content right (col 2) */
+.dc-chat-msg {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  align-items: start;
+  gap: 10px;
+}
+
+.dc-chat-msg__side { grid-column: 1; padding-top: 4px; }
+.dc-chat-msg__main { grid-column: 2; display: grid; gap: 6px; }
+
+/* User messages: flip columns so avatar + bubble sit on the right */
+.dc-chat-msg.role-user {
+  grid-template-columns: 1fr 36px;
+}
+.dc-chat-msg.role-user .dc-chat-msg__side {
+  grid-column: 2;
+  justify-self: end; /* push avatar to right edge */
+}
+.dc-chat-msg.role-user .dc-chat-msg__main {
+  grid-column: 1;
+}
+
+/* Meta row (name / role chip / actions) */
+.dc-chat-msg__meta {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; opacity: 0.85;
+}
+.dc-chat-msg__name { font-weight: 600; }
+.dc-chat-msg__role { font-size: 11px; }
+.dc-chat-msg__spacer { flex: 1; }
+.dc-chat-msg.role-user .dc-chat-msg__meta { justify-content: flex-end; }
+.dc-chat-msg.role-user .dc-chat-msg__spacer { display: none; }
+
+/* Chips row (e.g., sources) */
+.dc-chat-msg__chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.dc-chat-msg.role-user .dc-chat-msg__chips { justify-content: flex-end; }
+
+/* ---------- Bubbles ---------- */
+.dc-chat-msg__bubble {
+  /* Retro-future asymmetric corners: TL small, TR LARGE, BR small, BL LARGE */
+  border-radius: var(--rf-rs, 14px) var(--rf-rl, 24px) var(--rf-rs, 14px) var(--rf-rl, 24px);
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.78);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 10px 30px rgba(0,0,0,0.06);
+  max-width: min(720px, 92%);
+  justify-self: start; /* assistant/system/tool align left */
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Mirror corners & alignment for right-side (user) bubbles */
+.dc-chat-msg.role-user .dc-chat-msg__bubble {
+  border-radius: var(--rf-rl, 24px) var(--rf-rs, 14px) var(--rf-rl, 24px) var(--rf-rs, 14px);
+  justify-self: end;
+}
+
+/* Subtle tints per role (work nicely over .ui-glass) */
+.dc-chat-msg.role-user .dc-chat-msg__bubble {
+  background:
+    radial-gradient(140% 100% at 0% 0%, rgba(11,95,255,0.10), transparent 60%),
+    rgba(255,255,255,0.78);
+  border: 1px solid rgba(11,95,255,0.18);
+}
+
+.dc-chat-msg.role-assistant .dc-chat-msg__bubble {
+  background:
+    radial-gradient(140% 100% at 100% 0%, rgba(11,95,255,0.12), transparent 60%),
+    rgba(255,255,255,0.78);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.dc-chat-msg.role-tool .dc-chat-msg__bubble {
+  background: rgba(16,185,129,0.10);
+  border: 1px solid rgba(16,185,129,0.20);
+}
+
+.dc-chat-msg.role-system .dc-chat-msg__bubble {
+  background: rgba(220, 38, 38, 0.07);
+  border: 1px solid rgba(220, 38, 38, 0.18);
+}
+
+/* Streaming caret */
+.dc-chat-caret {
+  display: inline-block;
+  margin-left: 2px;
+  animation: dc-caret 1s steps(1) infinite;
+}
+@keyframes dc-caret {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+/* ---------- Composer (message input) ---------- */
+.dc-composer {
+  display: grid; gap: 8px;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  padding: 8px;
+  border-radius: 16px 26px 16px 26px; /* retro corners */
+  background: rgba(255,255,255,0.72);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+
+.dc-composer > .dc-textarea { grid-column: 1 / -1; } /* textarea spans first row */
+.dc-composer__actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* ---------- Tool call viewer ---------- */
+.dc-toolcall__trigger {
+  display: flex; align-items: center; gap: 8px;
+}
+
+.dc-toolcall__status {
+  width: 10px; height: 10px; border-radius: 999px;
+  background: #d1d5db;
+}
+.dc-toolcall__status.st-ok { background: #16a34a; }
+.dc-toolcall__status.st-error { background: #dc2626; }
+.dc-toolcall__status.st-pending { background: #f59e0b; }
+
+.dc-toolcall__body {
+  padding: 12px;
+  border-radius: 12px 20px 12px 20px; /* retro corners */
+  background: rgba(255,255,255,0.78);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.dc-code {
+  background: rgba(0,0,0,0.04);
+  padding: 10px;
+  border-radius: 10px;
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+/* ---------- Responsive tweaks ---------- */
+@media (max-width: 520px) {
+  .dc-chat { gap: 10px; }
+  .dc-chat-msg { gap: 8px; grid-template-columns: 32px 1fr; }
+  .dc-chat-msg.role-user { grid-template-columns: 1fr 32px; }
+  .dc-chat-msg__bubble { max-width: 100%; }
+  .dc-composer { border-radius: 14px 22px 14px 22px; }
+}
