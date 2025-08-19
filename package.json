@@ -7,9 +7,7 @@
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
-  "sideEffects": [
-    "**/*.css"
-  ],
+  "sideEffects": ["./dist/styles.css"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -153,12 +151,13 @@
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "build": "tsup && pnpm run build:css",
+    "build": "tsup && postcss src/styles/index.css -o dist/styles.css",
+    "prepare": "pnpm build",  
     "build:css": "postcss src/styles/index.css -o dist/styles.css",
     "build:storybook": "storybook build",
     "lint": "echo 'TODO: add eslint'",
     "test": "echo 'TODO: add tests'",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm build" 
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.15",
