@@ -281,3 +281,89 @@
   0%, 49% { opacity: .0; }
   50%, 100% { opacity: .8; }
 }
+
+/* ---------- THEME VARIABLES FOR MARKDOWN ---------- */
+/* Light defaults */
+:root,
+[data-theme="light"] {
+  --dc-md-fg: #0b0f14;           /* body text */
+  --dc-md-muted: #3a4657;        /* dimmed */
+  --dc-md-border: #e6ebf3;       /* borders */
+  --dc-md-code-bg: #f6f8fc;      /* code bg */
+}
+
+/* Dark overrides */
+[data-theme="dark"] {
+  --dc-md-fg: #e9eef5;
+  --dc-md-muted: color-mix(in oklab, #e9eef5, transparent 40%);
+  --dc-md-border: rgba(255,255,255,.14);
+  --dc-md-code-bg: rgba(255,255,255,.06);
+}
+
+/* ---------- MARKDOWN IN CHAT BUBBLES ---------- */
+.dc-chat .dc-md { 
+  color: var(--dc-md-fg);
+}
+
+/* Paragraphs / lists / headings */
+.dc-chat .dc-md p { margin: 0 0 .6rem; line-height: 1.55; }
+.dc-chat .dc-md h1, .dc-chat .dc-md h2, .dc-chat .dc-md h3 {
+  margin: .6rem 0 .35rem;
+  line-height: 1.2;
+  font-weight: 650;
+}
+.dc-chat .dc-md ul, .dc-chat .dc-md ol { margin: .4rem 1rem; padding-left: 1.2rem; }
+.dc-chat .dc-md li { margin: .2rem 0; color: var(--dc-md-fg); }
+
+/* Inline code */
+.dc-chat .dc-code-inline {
+  color: var(--dc-md-fg);
+  background: var(--dc-md-code-bg);
+  border: 1px solid var(--dc-md-border);
+  border-radius: 6px 12px 6px 12px; /* retro-future corners */
+  padding: 0 .35rem;
+  white-space: break-spaces;
+}
+
+/* Fenced code blocks */
+.dc-chat .dc-code-block {
+  color: var(--dc-md-fg);                 /* ensure readable text */
+  background: var(--dc-md-code-bg);       /* theme-aware */
+  border: 1px solid var(--dc-md-border);
+  border-radius: 14px 22px 14px 22px;     /* retro-future corners */
+  box-shadow: inset 0 1px 0 rgba(0,0,0,.03);
+  backdrop-filter: blur(10px) saturate(140%);
+  padding: 12px 14px;
+  margin: .6rem 0;
+  overflow: auto;
+}
+.dc-chat .dc-code-block > code {
+  display: block;
+  color: inherit;                         /* do NOT default to black */
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .88rem;
+  line-height: 1.5;
+  tab-size: 2;
+  white-space: pre;
+}
+
+/* Tables (GFM) */
+.dc-chat .dc-md-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: .6rem 0;
+  border: 1px solid var(--dc-md-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.dc-chat .dc-md-th, .dc-chat .dc-md-td {
+  color: var(--dc-md-fg);
+  border: 1px solid var(--dc-md-border);
+  padding: 6px 8px;
+  vertical-align: top;
+}
+.dc-chat .dc-md-th {
+  text-align: left;
+  font-weight: 600;
+  background: color-mix(in oklab, var(--dc-md-code-bg), #fff 4%);
+}

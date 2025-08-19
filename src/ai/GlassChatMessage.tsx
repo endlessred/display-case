@@ -18,18 +18,23 @@ export type GlassChatMessageProps = React.HTMLAttributes<HTMLDivElement> & {
   actions?: React.ReactNode;
   /** Optional inline chips (e.g., sources) */
   chips?: React.ReactNode;
-  /** Show subtle streaming caret */
+  /** Show subtle streaming caret (for live generation) */
   streaming?: boolean;
   /** Tone tint for assistant/tool bubbles */
   tone?: 'default' | 'primary' | 'success' | 'info' | 'danger';
+
+  /** Plain text content of the message (preferred for Markdown rendering). */
+  text?: string;
+
   /**
-   * Render string children as Markdown (GFM, code fences).
+   * If true, render `text` (or string children) as Markdown (GFM, code fences).
    * Or pass a custom renderer `(text) => ReactNode`.
    */
   markdown?: boolean | ((text: string) => React.ReactNode);
+
   /**
    * When true, show a visible thinking indicator inside the bubble.
-   * If omitted, we also show it when `streaming` is true AND children is empty.
+   * If omitted, we also show it when `streaming` is true AND body text is empty.
    */
   thinking?: boolean;
   /** Choose the thinking indicator style */
@@ -45,6 +50,7 @@ export function GlassChatMessage({
   chips,
   streaming,
   tone,
+  text,
   markdown,
   thinking,
   thinkingStyle = 'dots',
@@ -56,17 +62,29 @@ export function GlassChatMessage({
   const isTool = role === 'tool';
   const isSystem = role === 'system';
 
-  // Decide how to render the message body
-  let body: React.ReactNode = children;
-  if (markdown && typeof children === 'string') {
-    body = typeof markdown === 'function' ? markdown(children) : <Markdown>{children}</Markdown>;
+  // Pick the raw body text: prefer explicit `text`, otherwise string children
+  const rawText =
+    text !== undefined
+      ? text
+      : typeof children === 'string'
+        ? children
+        : '';
+
+  // Render the body: markdown -> custom function -> plain text
+  let body: React.ReactNode;
+  if (markdown && rawText) {
+    body =
+      typeof markdown === 'function'
+        ? markdown(rawText)
+        : <Markdown>{rawText}</Markdown>;
+  } else if (rawText) {
+    body = rawText;
+  } else {
+    // No text; if there are non-string children, show them (e.g., custom JSX body)
+    body = typeof children === 'string' ? null : children;
   }
 
-  const isEmpty =
-    children === '' ||
-    (typeof children === 'string' && children.trim() === '') ||
-    children == null;
-
+  const isEmpty = !rawText || rawText.trim() === '';
   const showThinking = thinking ?? (streaming && isEmpty);
 
   return (
@@ -88,7 +106,10 @@ export function GlassChatMessage({
           <strong className="dc-chat-msg__name">
             {name || (isUser ? 'You' : isTool ? 'Tool' : isSystem ? 'System' : 'Assistant')}
           </strong>
-          <GlassTag tone={isTool ? 'info' : isSystem ? 'danger' : 'primary'} className="dc-chat-msg__role">
+          <GlassTag
+            tone={isTool ? 'info' : isSystem ? 'danger' : 'primary'}
+            className="dc-chat-msg__role"
+          >
             {role}
           </GlassTag>
           <div className="dc-chat-msg__spacer" />
@@ -102,9 +123,7 @@ export function GlassChatMessage({
                 <GlassSpinner size="sm" label="Assistant is typing…" />
               ) : thinkingStyle === 'skeleton' ? (
                 <div className="dc-typing-skel" aria-live="polite" aria-label="Assistant is typing…">
-                  <span />
-                  <span />
-                  <span />
+                  <span /><span /><span />
                 </div>
               ) : (
                 <TypingDots />
@@ -113,7 +132,8 @@ export function GlassChatMessage({
           ) : (
             <>
               {body}
-              {streaming && <span className="dc-chat-caret" aria-hidden>▍</span>}
+              {/* Keep caret when streaming real text */}
+              {!isEmpty && streaming && <span className="dc-chat-caret" aria-hidden>▍</span>}
             </>
           )}
         </div>
