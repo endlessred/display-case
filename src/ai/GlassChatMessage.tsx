@@ -62,7 +62,7 @@ export function GlassChatMessage({
   const isTool = role === 'tool';
   const isSystem = role === 'system';
 
-  // Pick the raw body text: prefer explicit `text`, otherwise string children
+  // Prefer explicit `text`, else string children
   const rawText =
     text !== undefined
       ? text
@@ -70,7 +70,7 @@ export function GlassChatMessage({
         ? children
         : '';
 
-  // Render the body: markdown -> custom function -> plain text
+  // Render body: markdown -> custom -> plain text -> non-string children
   let body: React.ReactNode;
   if (markdown && rawText) {
     body =
@@ -80,7 +80,6 @@ export function GlassChatMessage({
   } else if (rawText) {
     body = rawText;
   } else {
-    // No text; if there are non-string children, show them (e.g., custom JSX body)
     body = typeof children === 'string' ? null : children;
   }
 
@@ -92,15 +91,17 @@ export function GlassChatMessage({
       className={clsx('dc-chat-msg', `role-${role}`, tone && `tone-${tone}`, className)}
       {...rest}
     >
+      {/* Side column (avatar). Keep size consistent with CSS var --dc-chat-avatar */}
       <div className="dc-chat-msg__side">
         <GlassAvatar
           src={avatarSrc}
           name={name || role}
-          size="sm"
+          size="md"
           tone={isUser ? undefined : 'info'}
         />
       </div>
 
+      {/* Main column */}
       <div className="dc-chat-msg__main">
         <div className="dc-chat-msg__meta">
           <strong className="dc-chat-msg__name">
@@ -118,11 +119,11 @@ export function GlassChatMessage({
 
         <div className="dc-chat-msg__bubble ui-glass">
           {showThinking ? (
-            <div className="dc-chat-msg__thinking">
+            <div className="dc-chat-msg__thinking" aria-live="polite">
               {thinkingStyle === 'spinner' ? (
                 <GlassSpinner size="sm" label="Assistant is typing…" />
               ) : thinkingStyle === 'skeleton' ? (
-                <div className="dc-typing-skel" aria-live="polite" aria-label="Assistant is typing…">
+                <div className="dc-typing-skel" aria-label="Assistant is typing…">
                   <span /><span /><span />
                 </div>
               ) : (
