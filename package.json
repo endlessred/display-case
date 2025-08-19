@@ -1,6 +1,6 @@
 {
   "name": "display-case",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Glassmorphism React UI components (accessible, token-driven)",
   "type": "module",
   "license": "MIT",
